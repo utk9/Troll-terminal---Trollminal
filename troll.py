@@ -1,6 +1,8 @@
 import os
 import re
 import subprocess
+import time
+import sys
 import threading
 from random import randint
 
@@ -23,6 +25,16 @@ def run_bash(command):
 	except OSError:
 		print "-bash: "+ command + " : command not found"
 
+
+def talk(str):
+  for c in str:
+    sys.stdout.write(c)
+    sys.stdout.flush()
+    time.sleep(0.05)
+  time.sleep(1)
+  print ""
+
+talk("hi im terminal :D")
 
 def increaseAnger(anger):
 	global angerLevel
