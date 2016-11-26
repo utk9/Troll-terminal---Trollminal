@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import re
 import subprocess
@@ -5,6 +7,7 @@ import time
 import sys
 import threading
 from random import randint
+import time
 
 # Dankness follows
 
@@ -30,6 +33,8 @@ angerLevel = 0 # maxes out at 5
 laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
 userName =  "boo"#raw_input('Please enter the user name: ')
 
+num_commands_in_intrl = 0
+
 # clear the old input >:D
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -42,8 +47,10 @@ def run_bash(command):
 	except OSError:
 		messages = ["do u know what ur doing", ""]
 		print "-bash: "+ command + " : command not found"
-		talk("do u know what ur doing")
 
+
+def prompt(str):
+	talk(str, False)
 
 def talk(str, newline=True):
 	time.sleep(1)
@@ -107,17 +114,63 @@ def troll_rm(name):
 	shouldDelete = raw_input("Continue: ")
 	if shouldDelete == "y": run_bash("rm -r " + name)
 
+
+def troll_mkdir():
+	actions = ["orig", "print birth certificate"]
+	# strip out the name of the directory
+	mkdirOpts = command.split();
+	dirName = ""
+	for opt in mkdirOpts:
+		if opt != "mkdir" and "-" not in opt:
+			dirName = opt
+			break
+	if dirName == "":
+		talk("u have to name ur children !!!! >:{")
+		increaseAnger(1)
+		return
+	prompt("r u sure you're ready for the responsibility of a baby dir (y/n): ")
+	res = raw_input()
+	if res == "y" or res == "Y" or res == "yes" or res == "YES" or res == "Yes":
+		if res == "YES":
+			talk("wow settle down there tiger, no need to be that exited")
+		talk("a new directory was brought into the world!!! :O")
+		mum = raw_input("Please enter the father's name: ")
+		pa = raw_input("Please enter the mother's name: ")
+		print "-" * 61
+		print "| ✧･ﾟ: *✧･ﾟ:*✧･ﾟ: *✧･ﾟ:* ~ " + "BIRTH CERTIFICATE" + " ~ *:･ﾟ✧*:･ﾟ✧*:･ﾟ✧*:･ﾟ✧ |"
+		print "|" + " " * 20 + "momma: " + mum + " " * (32 - len(mum)) + "|"
+		print "|" + " " * 20 + "poppa: " + pa + " " * (32 - len(pa)) + "|"
+		print "|" + " " * 20 + "NEW LIFE: " + dirName + " " * (29 - len(dirName))  + "|"
+		print "-" * 61
+		run_bash(command)
+	else: # not ready
+		talk("ok i wasn't ready 4 that kind of commitment either")
+
+
 regulateAnger()
 introduceSelf()
+
+talk("hi im terminal :D")
 
 #prompt
 laptopName = raw_input('Please enter the laptop\'s name: ')
 userName = raw_input('Please enter the user name: ')
 
+intervalStart = time.time()
+
 #main loop
 while True:
 	rest = ""
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
+
+	if time.time() - intervalStart > 10:
+		intervalStart = time.time()
+		num_commands_in_intrl = 0
+
+	if (num_commands_in_intrl > 4):
+		print "Too many commands"
+
+
 	if " " in command: # find the first space
 		root = command[0:command.index(" ")]
 		rest = command[command.index(" "): len(command)]
@@ -141,3 +194,7 @@ while True:
 		sleep()
 	else:
 		run_bash(command)
+
+
+	num_commands_in_intrl+=1
+
