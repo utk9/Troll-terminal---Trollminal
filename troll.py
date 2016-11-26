@@ -5,6 +5,7 @@ import time
 import sys
 import threading
 from random import randint
+import time
 
 # Dankness follows
 
@@ -12,6 +13,9 @@ angerLevel = 0 # maxes out at 5
 
 laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
 userName =  "boo"#raw_input('Please enter the user name: ')
+
+intervalStart = time.time()
+num_commands_in_intrl = 0
 
 # clear the old input >:D
 os.system('cls' if os.name == 'nt' else 'clear')
@@ -34,8 +38,6 @@ def talk(str):
   time.sleep(1)
   print ""
 
-talk("hi im terminal :D")
-
 def increaseAnger(anger):
 	global angerLevel
 	angerLevel = angerLevel + anger
@@ -45,6 +47,7 @@ def regulateAnger():
   threading.Timer(60, regulateAnger).start()
   global angerLevel
   if angerLevel != 0: angerLevel-=1
+
 
 def troll_ls():
 	files =  os.listdir(os.getcwd())
@@ -58,8 +61,9 @@ def troll_rm(name):
 	shouldDelete = raw_input("Continue: ")
 	if shouldDelete == "y": run_bash("rm -r " + name)
 
-
 regulateAnger()
+
+talk("hi im terminal :D")
 
 #prompt
 laptopName = raw_input('Please enter the laptop\'s name: ')
@@ -69,6 +73,16 @@ userName = raw_input('Please enter the user name: ')
 while True:
 	rest = ""
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
+	
+	
+	if time.time() - intervalStart > 10:
+		intervalStart = time.time()
+		num_commands_in_intrl = 0
+
+	if (num_commands_in_intrl > 4):
+		print "Too many commands"
+
+
 	if " " in command: # find the first space
 		root = command[0:command.index(" ")]
 		rest = command[command.index(" "): len(command)]
@@ -90,4 +104,6 @@ while True:
 		print "help"
 	else:
 		run_bash(command)
+
+	num_commands_in_intrl+=1
 		
