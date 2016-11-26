@@ -14,7 +14,6 @@ angerLevel = 0 # maxes out at 5
 laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
 userName =  "boo"#raw_input('Please enter the user name: ')
 
-intervalStart = time.time()
 num_commands_in_intrl = 0
 
 # clear the old input >:D
@@ -68,6 +67,8 @@ talk("hi im terminal :D")
 #prompt
 laptopName = raw_input('Please enter the laptop\'s name: ')
 userName = raw_input('Please enter the user name: ')
+
+intervalStart = time.time()
 
 #main loop
 while True:
