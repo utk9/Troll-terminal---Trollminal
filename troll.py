@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import re
 import subprocess
@@ -9,8 +11,25 @@ import time
 
 # Dankness follows
 
-angerLevel = 0 # maxes out at 5
+class colors:
+	TALK = "\033[35m"
+	BASH = "\033[0m"
 
+ASCII_COMPUTER = """
+ ._________________.
+ | _______________ |
+ | I             I |
+ | I   O     O   I |
+ | I      -      I |
+ | I    \___/    I |
+ | I_____________I |
+ !_________________!
+    ._[_______]_.
+.___|___________|___.
+
+"""
+
+angerLevel = 0 # maxes out at 5
 laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
 userName =  "boo"#raw_input('Please enter the user name: ')
 
@@ -29,13 +48,21 @@ def run_bash(command):
 		print "-bash: "+ command + " : command not found"
 
 
-def talk(str):
-  for c in str:
-    sys.stdout.write(c)
-    sys.stdout.flush()
-    time.sleep(0.05)
-  time.sleep(1)
-  print ""
+def prompt(str):
+	talk(str, False)
+
+def talk(str, newline=True):
+	time.sleep(1)
+	for c in str:
+		sys.stdout.write(colors.TALK + c)
+		sys.stdout.flush()
+		time.sleep(0.05)
+	time.sleep(1)
+	if newline:
+		print colors.BASH
+	else:
+		print colors.BASH,
+
 
 def increaseAnger(anger):
 	global angerLevel
@@ -43,9 +70,15 @@ def increaseAnger(anger):
 	if angerLevel > 5: angerLevel = 5
 
 def regulateAnger():
-  threading.Timer(60, regulateAnger).start()
-  global angerLevel
-  if angerLevel != 0: angerLevel-=1
+	threading.Timer(60, regulateAnger).start()
+	global angerLevel
+	if angerLevel != 0: angerLevel-=1
+
+def introduceSelf():
+	print colors.TALK + ASCII_COMPUTER
+	talk("hi im terminal :D")
+	# talk("i'll be ur command line buddy")
+	# talk("feel free to type in a few commands and i'll go and execute them for ya")
 
 
 def troll_ls():
@@ -60,7 +93,41 @@ def troll_rm(name):
 	shouldDelete = raw_input("Continue: ")
 	if shouldDelete == "y": run_bash("rm -r " + name)
 
+
+def troll_mkdir():
+	actions = ["orig", "print birth certificate"]
+	# strip out the name of the directory
+	mkdirOpts = command.split();
+	dirName = ""
+	for opt in mkdirOpts:
+		if opt != "mkdir" and "-" not in opt:
+			dirName = opt
+			break
+	if dirName == "":
+		talk("u have to name ur children !!!! >:{")
+		increaseAnger(1)
+		return
+	prompt("r u sure you're ready for the responsibility of a baby dir (y/n): ")
+	res = raw_input()
+	if res == "y" or res == "Y" or res == "yes" or res == "YES" or res == "Yes":
+		if res == "YES":
+			talk("wow settle down there tiger, no need to be that exited")
+		talk("a new directory was brought into the world!!! :O")
+		mum = raw_input("Please enter the father's name: ")
+		pa = raw_input("Please enter the mother's name: ")
+		print "-" * 61
+		print "| ✧･ﾟ: *✧･ﾟ:*✧･ﾟ: *✧･ﾟ:* ~ " + "BIRTH CERTIFICATE" + " ~ *:･ﾟ✧*:･ﾟ✧*:･ﾟ✧*:･ﾟ✧ |"
+		print "|" + " " * 20 + "momma: " + mum + " " * (32 - len(mum)) + "|"
+		print "|" + " " * 20 + "poppa: " + pa + " " * (32 - len(pa)) + "|"
+		print "|" + " " * 20 + "NEW LIFE: " + dirName + " " * (29 - len(dirName))  + "|"
+		print "-" * 61
+		run_bash(command)
+	else: # not ready
+		talk("ok i wasn't ready 4 that kind of commitment either")
+
+
 regulateAnger()
+introduceSelf()
 
 talk("hi im terminal :D")
 
@@ -74,7 +141,6 @@ intervalStart = time.time()
 while True:
 	rest = ""
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
-	
 	
 	if time.time() - intervalStart > 10:
 		intervalStart = time.time()
@@ -105,6 +171,7 @@ while True:
 		print "help"
 	else:
 		run_bash(command)
+
 
 	num_commands_in_intrl+=1
 		
