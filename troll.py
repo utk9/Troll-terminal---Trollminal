@@ -1,6 +1,8 @@
 import os
 import re
 import subprocess
+import time
+import sys
 
 # Dankness follows
 
@@ -16,6 +18,16 @@ os.system('cls' if os.name == 'nt' else 'clear')
 laptopName = raw_input('Please enter the laptop\'s name: ')
 userName = raw_input('Please enter the user name: ')
 
+def talk(str):
+  for c in str:
+    sys.stdout.write(c)
+    sys.stdout.flush()
+    time.sleep(0.05)
+  time.sleep(1)
+  print ""
+
+talk("hi im terminal :D")
+
 #main loop
 while True:
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
@@ -24,7 +36,6 @@ while True:
 	else:
 		root = command
 	print command
-	root = "hello"
 	if root == "ls":
 		print "ls"
 	elif root == "cd":
