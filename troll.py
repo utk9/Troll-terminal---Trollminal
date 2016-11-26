@@ -7,8 +7,25 @@ import threading
 
 # Dankness follows
 
-angerLevel = 0 # maxes out at 5
+class colors:
+	TALK = "\033[35m"
+	BASH = "\033[0m"
 
+ASCII_COMPUTER = """
+ ._________________.
+ | _______________ |
+ | I             I |
+ | I   O     O   I |
+ | I      -      I |
+ | I    \___/    I |
+ | I_____________I |
+ !_________________!
+    ._[_______]_.
+.___|___________|___.
+
+"""
+
+angerLevel = 0 # maxes out at 5
 laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
 userName =  "boo"#raw_input('Please enter the user name: ')
 
@@ -20,14 +37,13 @@ laptopName = raw_input('Please enter the laptop\'s name: ')
 userName = raw_input('Please enter the user name: ')
 
 def talk(str):
-  for c in str:
-    sys.stdout.write(c)
-    sys.stdout.flush()
-    time.sleep(0.05)
-  time.sleep(1)
-  print ""
-
-talk("hi im terminal :D")
+	time.sleep(1)
+	for c in str:
+		sys.stdout.write(colors.TALK + c)
+		sys.stdout.flush()
+		time.sleep(0.05)
+	time.sleep(1)
+	print colors.BASH
 
 def increaseAnger(anger):
 	global angerLevel
@@ -35,11 +51,18 @@ def increaseAnger(anger):
 	if angerLevel > 5: angerLevel = 5
 
 def regulateAnger():
-  threading.Timer(60, regulateAnger).start()
-  global angerLevel
-  if angerLevel != 0: angerLevel-=1
+	threading.Timer(60, regulateAnger).start()
+	global angerLevel
+	if angerLevel != 0: angerLevel-=1
+
+def introduceSelf():
+	print colors.TALK + ASCII_COMPUTER
+	talk("hi im terminal :D")
+	talk("i'll be ur command line buddy")
+	talk("feel free to type in a few commands and i'll go and execute them for ya")
 
 regulateAnger()
+introduceSelf()
 
 #main loop
 while True:
@@ -49,7 +72,6 @@ while True:
 	else:
 		root = command
 	print angerLevel
-	root = "hello"
 	if root == "ls":
 		print "ls"
 	elif root == "cd":
@@ -72,3 +94,4 @@ while True:
 
 		except OSError:
 			print "-bash: "+ command + " : command not found"
+			talk("do u know what ur doing")
