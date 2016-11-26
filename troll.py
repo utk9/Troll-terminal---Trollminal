@@ -2,19 +2,27 @@ import os
 import re
 import subprocess
 
-#Dankness follows
+# Dankness follows
 
-command = ""
+angerLevel = 0 # maxes out at 5
 
-angerLevel = 0
+laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
+userName =  "boo"#raw_input('Please enter the user name: ')
+
+# clear the old input >:D
+os.system('cls' if os.name == 'nt' else 'clear')
 
 #prompt
 laptopName = raw_input('Please enter the laptop\'s name: ')
 userName = raw_input('Please enter the user name: ')
 
 #main loop
-while True: 
+while True:
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
+	if " " in command: # find the first space
+		root = command[0:command.index(" ")]
+	else:
+		root = command
 	print command
 	root = "hello"
 	if root == "ls":
@@ -39,4 +47,3 @@ while True:
 
 		except OSError:
 			print "-bash: "+ command + " : command not found"
-	
