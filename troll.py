@@ -50,9 +50,13 @@ def troll_ls():
 	files =  os.listdir(os.getcwd())
 	for file in files:
 		shouldPrint = randint(0,9)
-		if (shouldPrint > 2): print file
+		if (shouldPrint > 2): print file,
+	print ('\n')
 
-	#run_bash('ls')
+def troll_rm(name):
+	print "Not like this! Please don't kill me"
+	shouldDelete = raw_input("Continue: ")
+	if shouldDelete == "y": run_bash("rm -r " + name)
 
 
 regulateAnger()
@@ -63,9 +67,11 @@ userName = raw_input('Please enter the user name: ')
 
 #main loop
 while True:
+	rest = ""
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
 	if " " in command: # find the first space
 		root = command[0:command.index(" ")]
+		rest = command[command.index(" "): len(command)]
 	else:
 		root = command
 	if root == "ls":
@@ -73,9 +79,9 @@ while True:
 	elif root == "cd":
 		print "cd"
 	elif root == "mkdir":
-		print "mkdir"
+		troll_mkdir()
 	elif root == "rm":
-		print "rm"
+		troll_rm(rest)
 	elif root == "pwd":
 		print "pwd"
 	elif root == "git":
