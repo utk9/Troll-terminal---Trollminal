@@ -4,6 +4,7 @@ import subprocess
 import time
 import sys
 import threading
+from random import randint
 
 # Dankness follows
 
@@ -32,9 +33,16 @@ userName =  "boo"#raw_input('Please enter the user name: ')
 # clear the old input >:D
 os.system('cls' if os.name == 'nt' else 'clear')
 
-#prompt
-laptopName = raw_input('Please enter the laptop\'s name: ')
-userName = raw_input('Please enter the user name: ')
+def run_bash(command):
+	try:
+		cmd = subprocess.Popen(re.split(r'\s+', command), stdout=subprocess.PIPE)
+		cmd_out = cmd.stdout.read()
+		print cmd_out
+
+	except OSError:
+		print "-bash: "+ command + " : command not found"
+		talk("do u know what ur doing")
+
 
 def talk(str):
 	time.sleep(1)
@@ -61,25 +69,42 @@ def introduceSelf():
 	talk("i'll be ur command line buddy")
 	talk("feel free to type in a few commands and i'll go and execute them for ya")
 
+def troll_ls():
+	files =  os.listdir(os.getcwd())
+	for file in files:
+		shouldPrint = randint(0,9)
+		if (shouldPrint > 2): print file,
+	print ('\n')
+
+def troll_rm(name):
+	print "Not like this! Please don't kill me"
+	shouldDelete = raw_input("Continue: ")
+	if shouldDelete == "y": run_bash("rm -r " + name)
+
 regulateAnger()
 introduceSelf()
 
+#prompt
+laptopName = raw_input('Please enter the laptop\'s name: ')
+userName = raw_input('Please enter the user name: ')
+
 #main loop
 while True:
+	rest = ""
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
 	if " " in command: # find the first space
 		root = command[0:command.index(" ")]
+		rest = command[command.index(" "): len(command)]
 	else:
 		root = command
-	print angerLevel
 	if root == "ls":
-		print "ls"
+		troll_ls()
 	elif root == "cd":
 		print "cd"
 	elif root == "mkdir":
-		print "mkdir"
+		troll_mkdir()
 	elif root == "rm":
-		print "rm"
+		troll_rm(rest)
 	elif root == "pwd":
 		print "pwd"
 	elif root == "git":
@@ -87,11 +112,4 @@ while True:
 	elif root == "help":
 		print "help"
 	else:
-		try:
-			cmd = subprocess.Popen(re.split(r'\s+', command), stdout=subprocess.PIPE)
-			cmd_out = cmd.stdout.read()
-			print cmd_out
-
-		except OSError:
-			print "-bash: "+ command + " : command not found"
-			talk("do u know what ur doing")
+		run_bash(command)
