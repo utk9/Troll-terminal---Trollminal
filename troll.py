@@ -5,7 +5,7 @@ import threading
 
 # Dankness follows
 
-angerLevel = 5 # maxes out at 5
+angerLevel = 0 # maxes out at 5
 
 laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
 userName =  "boo"#raw_input('Please enter the user name: ')
