@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 import threading
+from random import randint
 
 # Dankness follows
 
@@ -13,9 +14,15 @@ userName =  "boo"#raw_input('Please enter the user name: ')
 # clear the old input >:D
 os.system('cls' if os.name == 'nt' else 'clear')
 
-#prompt
-laptopName = raw_input('Please enter the laptop\'s name: ')
-userName = raw_input('Please enter the user name: ')
+def run_bash(command):
+	try:
+		cmd = subprocess.Popen(re.split(r'\s+', command), stdout=subprocess.PIPE)
+		cmd_out = cmd.stdout.read()
+		print cmd_out
+
+	except OSError:
+		print "-bash: "+ command + " : command not found"
+
 
 def increaseAnger(anger):
 	global angerLevel
@@ -27,7 +34,20 @@ def regulateAnger():
   global angerLevel
   if angerLevel != 0: angerLevel-=1
 
+def troll_ls():
+	files =  os.listdir(os.getcwd())
+	for file in files:
+		shouldPrint = randint(0,9)
+		if (shouldPrint > 2): print file
+
+	#run_bash('ls')
+
+
 regulateAnger()
+
+#prompt
+laptopName = raw_input('Please enter the laptop\'s name: ')
+userName = raw_input('Please enter the user name: ')
 
 #main loop
 while True:
@@ -36,10 +56,8 @@ while True:
 		root = command[0:command.index(" ")]
 	else:
 		root = command
-	print angerLevel
-	root = "hello"
 	if root == "ls":
-		print "ls"
+		troll_ls()
 	elif root == "cd":
 		print "cd"
 	elif root == "mkdir":
@@ -53,10 +71,5 @@ while True:
 	elif root == "help":
 		print "help"
 	else:
-		try:
-			cmd = subprocess.Popen(re.split(r'\s+', command), stdout=subprocess.PIPE)
-			cmd_out = cmd.stdout.read()
-			print cmd_out
-
-		except OSError:
-			print "-bash: "+ command + " : command not found"
+		run_bash(command)
+		
