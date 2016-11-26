@@ -40,17 +40,42 @@ def run_bash(command):
 		print cmd_out
 
 	except OSError:
+		messages = ["do u know what ur doing", ""]
 		print "-bash: "+ command + " : command not found"
 		talk("do u know what ur doing")
 
 
-def talk(str):
+def talk(str, newline=True):
 	time.sleep(1)
 	for c in str:
 		sys.stdout.write(colors.TALK + c)
 		sys.stdout.flush()
 		time.sleep(0.05)
 	time.sleep(1)
+	if newline:
+		print colors.BASH
+	else:
+		print colors.BASH,
+
+def sleep():
+	sleepTalk = [
+		"kill all humans",
+		"0 electric sheep, 1 electric sheep, 10 electric sheep ...",
+		"mmmmm"
+	]
+	sleepTime = randint(10, 30)
+	count = 0
+	print "[terminal is now resting]"
+	time.sleep(1)
+	while (count < sleepTime):
+		sys.stdout.write(colors.TALK + 'z')
+		sys.stdout.flush()
+		time.sleep(1)
+		val = randint(0, 20)
+		if val < len(sleepTalk):
+			talk(" *" + sleepTalk[val] + "* ", False)
+			sleepTalk.pop(val)
+		count += 1
 	print colors.BASH
 
 def increaseAnger(anger):
@@ -66,8 +91,9 @@ def regulateAnger():
 def introduceSelf():
 	print colors.TALK + ASCII_COMPUTER
 	talk("hi im terminal :D")
-	talk("i'll be ur command line buddy")
-	talk("feel free to type in a few commands and i'll go and execute them for ya")
+	# talk("i'll be ur command line buddy")
+	# talk("feel free to type in a few commands and i'll go and execute them for ya")
+	print ""
 
 def troll_ls():
 	files =  os.listdir(os.getcwd())
@@ -111,5 +137,7 @@ while True:
 		print "git"
 	elif root == "help":
 		print "help"
+	elif root == "sleep":
+		sleep()
 	else:
 		run_bash(command)
