@@ -1,0 +1,37 @@
+Terminal gets fed up with you after a number of instructions
+- friendly => let's play hangman, tic tac toe
+- anger
+- patience
+
+error => "Do you know what you're doing?"
+multiple cds => "I'm tired of moving around." (cursor stalls for 1 minute)
+                  [your terminal is currently resting] <- any time a person tries to type
+                  "zzzzzzzzzz"
+"why don't you ever ask me how i'm doing?"
+"im good! thx 4 asking :D"
+[press r to respond, or just...]
+
+cd
+  Universe\MilkyWay\SolarSystem\..Vancouver\C:\Ivy
+ls
+  "here's all your crap (murderer)"
+  "have you ever thought about organizing all this?"
+  "can u guess which is missing ;)"
+  (the ls disappears after a short amount of time)
+  "why aren't u playing my game :("
+mkdir
+  Birth Certificate for Directory
+    - first name, last name
+    - mother + father
+  "i hope u care 4 this child"
+rm
+  directory "why? father/mother"
+  -r directory: "not my children too!" [continue? y/n]
+pwd
+  pwd
+  Universe\MilkyWay\SolarSystem\..Vancouver\C:\Ivy
+git init
+  Birth Certificate for Directory
+    - first name, last name
+    - mother + father
+help
