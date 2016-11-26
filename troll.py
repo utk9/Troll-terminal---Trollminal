@@ -3,6 +3,7 @@ import re
 import subprocess
 import time
 import sys
+import threading
 
 # Dankness follows
 
@@ -28,6 +29,18 @@ def talk(str):
 
 talk("hi im terminal :D")
 
+def increaseAnger(anger):
+	global angerLevel
+	angerLevel = angerLevel + anger
+	if angerLevel > 5: angerLevel = 5
+
+def regulateAnger():
+  threading.Timer(60, regulateAnger).start()
+  global angerLevel
+  if angerLevel != 0: angerLevel-=1
+
+regulateAnger()
+
 #main loop
 while True:
 	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
@@ -35,7 +48,8 @@ while True:
 		root = command[0:command.index(" ")]
 	else:
 		root = command
-	print command
+	print angerLevel
+	root = "hello"
 	if root == "ls":
 		print "ls"
 	elif root == "cd":
