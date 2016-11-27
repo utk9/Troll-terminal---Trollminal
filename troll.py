@@ -9,6 +9,8 @@ import threading
 from random import randint
 import urllib2
 import json
+import random
+import string
 
 # Dankness follows
 
@@ -104,7 +106,7 @@ def introduceSelf():
 	print ""
 
 def troll_ls():
-	actions = ["orig", "play fun guessing game"]
+	actions = ["orig", "play fun guessing game", "hangman"]
 
 	files = os.listdir(os.getcwd())
 	for file in files:
@@ -129,10 +131,54 @@ def troll_rm(name):
 
 
 def troll_mkdir():
-	actions = ["orig", "print birth certificate"]
+	actions = ["orig", "print birth certificate", "hangman"]
 	actionTaken = actions[randint(0, len(actions) - 1)]
+	actionTaken = "hangman"
 	if actionTaken == "orig" and not angerLevel == 5:
 		run_bash(command)
+	elif actionTaken == "hangman" or angerLevel == 5:
+		prompt("do you want to play hangman w/ me!!!!  i've been a good comp00ter!! (y/n): ")
+		res = raw_input()
+		if res == "y" or res == "Y" or res == "yes" or res == "YES" or res == "Yes":
+			frames = open('hangman.txt').read().split('nextscene\n')
+			rword = random.choice(open('words.txt').read().split('\n'))
+			key = rword.translate(string.maketrans(string.lowercase, '_' * len(string.lowercase)))
+			letters = []
+			def clear(s):
+				print s
+				for i in range(13):
+					sys.stdout.write("\033[F") # Cursor up one line
+				time.sleep(1); # os.system('clear')
+			while True:
+				print frames[0] % (str(letters).replace('\'', ''), key)
+				if key == rword:
+					print 'YOU WIN!'; break
+				if len(frames) == 1:
+					print 'YOU LOSE!'; break
+				try:
+					letter = raw_input()
+				except:
+					clear('That is not valid input!'); continue
+				if letter not in [l for l in string.lowercase]:
+					clear('That is not valid input!'); continue
+				if letter in letters:
+					clear('That letter was already tried!'); continue
+				letters.append(letter)
+				if letter in rword:
+					key = [t for t in key]; c = 0; n = []
+					for a in rword:
+						if a == letter:
+							n.append(c)
+						c += 1
+					for b in n:
+						key[b] = rword[b]
+					key = ''.join(key)
+					clear('That letter is in the word!'); continue
+				del frames[0]
+				clear('That letter is not in the word!')
+		else:
+			talk("ur no fun.")
+			increaseAnger(5)
 	elif actionTaken == "print birth certificate" or angerLevel == 5:
 		# strip out the name of the directory
 		mkdirOpts = command.split();
@@ -204,8 +250,6 @@ def troll_cat():
 
 regulateAnger()
 introduceSelf()
-
-talk("hi im terminal :D")
 
 #prompt
 laptopName = raw_input('Please enter the laptop\'s name: ')
