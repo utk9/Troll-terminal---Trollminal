@@ -7,6 +7,8 @@ import time
 import sys
 import threading
 from random import randint
+import urllib2
+import json
 
 # Dankness follows
 
@@ -77,47 +79,101 @@ def introduceSelf():
 	# talk("feel free to type in a few commands and i'll go and execute them for ya")
 
 def troll_ls():
-	files =  os.listdir(os.getcwd())
+	actions = ["orig", "play fun guessing game"]
+
+	files = os.listdir(os.getcwd())
 	for file in files:
 		shouldPrint = randint(0,9)
 		if (shouldPrint > 2): print file,
 	print ('\n')
 
+	messages = ["idk if this is all of them ;)", "the files are playing hide and seek :D"]
+	messagePicked = randint(0, len(messages) - 1)
+
+	if angerLevel == 5:
+		talk("here's all your crap")
+	else:
+		talk(messages[messagePicked])
+
 def troll_rm(name):
-	print "Not like this! Please don't kill me"
+	talk("not like this! please don't kill me")
 	shouldDelete = raw_input("Continue: ")
-	if shouldDelete == "y": run_bash("rm -r " + name)
+	if shouldDelete == "y":
+		run_bash("rm -r " + name)
+		increaseAnger(5)
 
 def troll_mkdir():
 	actions = ["orig", "print birth certificate"]
-	# strip out the name of the directory
-	mkdirOpts = command.split();
-	dirName = ""
-	for opt in mkdirOpts:
-		if opt != "mkdir" and "-" not in opt:
-			dirName = opt
-			break
-	if dirName == "":
-		talk("u have to name ur children !!!! >:{")
-		increaseAnger(1)
-		return
-	prompt("r u sure you're ready for the responsibility of a baby dir (y/n): ")
-	res = raw_input()
-	if res == "y" or res == "Y" or res == "yes" or res == "YES" or res == "Yes":
-		if res == "YES":
-			talk("wow settle down there tiger, no need to be that exited")
-		talk("a new directory was brought into the world!!! :O")
-		mum = raw_input("Please enter the father's name: ")
-		pa = raw_input("Please enter the mother's name: ")
-		print "-" * 61
-		print "| ✧･ﾟ: *✧･ﾟ:*✧･ﾟ: *✧･ﾟ:* ~ " + "BIRTH CERTIFICATE" + " ~ *:･ﾟ✧*:･ﾟ✧*:･ﾟ✧*:･ﾟ✧ |"
-		print "|" + " " * 20 + "momma: " + mum + " " * (32 - len(mum)) + "|"
-		print "|" + " " * 20 + "poppa: " + pa + " " * (32 - len(pa)) + "|"
-		print "|" + " " * 20 + "NEW LIFE: " + dirName + " " * (29 - len(dirName))  + "|"
-		print "-" * 61
+	actionTaken = actions[randint(0, len(actions) - 1)]
+	if actionTaken == "orig" and not angerLevel == 5:
 		run_bash(command)
-	else: # not ready
-		talk("ok i wasn't ready 4 that kind of commitment either")
+	elif actionTaken == "print birth certificate" or angerLevel == 5:
+		# strip out the name of the directory
+		mkdirOpts = command.split();
+		dirName = ""
+		for opt in mkdirOpts:
+			if opt != "mkdir" and "-" not in opt:
+				dirName = opt
+				break
+		if dirName == "":
+			talk("u have to name ur children !!!! >:{")
+			increaseAnger(1)
+			return
+		prompt("r u sure you're ready for the responsibility of a baby dir (y/n): ")
+		res = raw_input()
+		if res == "y" or res == "Y" or res == "yes" or res == "YES" or res == "Yes":
+			if res == "YES":
+				talk("wow settle down there tiger, no need to be that exited")
+			talk("a new directory was brought into the world!!! :O")
+			mum = raw_input("Please enter the father's name: ")
+			pa = raw_input("Please enter the mother's name: ")
+			print "-" * 61
+			print "| ✧･ﾟ: *✧･ﾟ:*✧･ﾟ: *✧･ﾟ:* ~ " + "BIRTH CERTIFICATE" + " ~ *:･ﾟ✧*:･ﾟ✧*:･ﾟ✧*:･ﾟ✧ |"
+			print "|" + " " * 20 + "momma: " + mum + " " * (32 - len(mum)) + "|"
+			print "|" + " " * 20 + "poppa: " + pa + " " * (32 - len(pa)) + "|"
+			print "|" + " " * 20 + "NEW LIFE: " + dirName + " " * (29 - len(dirName))  + "|"
+			print "-" * 61
+			run_bash(command)
+		else: # not ready
+			talk("ok i wasn't ready 4 that kind of commitment either")
+
+def troll_cd():
+	print "hello"
+def troll_cat():
+	CATS = [
+	"""
+		                       A___A
+		           A___A       |o o|
+		     ____ / o o \      |='=|
+		___/~____   ='= /_____/    |_________
+		  (______)__m_m_)    /  ||||
+		                    |___||||]
+	""",
+	"""
+   _.---.._             _.---...__
+.-'   /\   \          .'  /\     /
+`.   (  )   \        /   (  )   /
+  `.  \/   .'\      /`.   \/  .'
+    ``---''   )    (   ``---''
+            .';.--.;`.
+          .' /_...._\ `.
+        .'   `.a  a.'   `.
+       (        \/        )
+        `.___..-'`-..___.'
+           \          /
+            `-.____.-'
+
+	""",
+	"""
+		  |\      _,,,---,,_
+		  /,`.-'`'    -.  ;-;;,_
+		 |,4-  ) )-,_..;\ (  `'-'
+		'---''(_/--'  `-'\_)
+	"""
+	]
+	catPicked = randint(0, len(CATS) - 1)
+	print CATS[catPicked]
+
 
 regulateAnger()
 introduceSelf()
@@ -138,7 +194,7 @@ while True:
 	if root == "ls":
 		troll_ls()
 	elif root == "cd":
-		print "cd"
+		troll_cd()
 	elif root == "mkdir":
 		troll_mkdir()
 	elif root == "rm":
@@ -149,5 +205,7 @@ while True:
 		print "git"
 	elif root == "help":
 		print "help"
+	elif root == "cat":
+		troll_cat()
 	else:
 		run_bash(command)
