@@ -43,6 +43,7 @@ def run_bash(command):
 		cmd = subprocess.Popen(re.split(r'\s+', command), stdout=subprocess.PIPE)
 		cmd_out = cmd.stdout.read()
 		print cmd_out
+		return cmd_out
 
 	except OSError:
 		print "-bash: "+ command + " : command not found"
@@ -88,10 +89,23 @@ def troll_ls():
 		if (shouldPrint > 2): print file,
 	print ('\n')
 
+
 def troll_rm(name):
 	print "Not like this! Please don't kill me"
 	shouldDelete = raw_input("Continue: ")
 	if shouldDelete == "y": run_bash("rm -r " + name)
+
+def troll_cd(path):
+	os.chdir(path)
+	goBack = randint(0, 2)
+	if goBack == 0:
+		os.chdir("..")
+		print "going back"
+	else:
+		subs = next(os.walk('.'))[1]
+		i = randint(0, len(subs)-1)
+		goForward = subs[i]
+		os.chdir("./" + goForward)
 
 
 def troll_mkdir():
@@ -140,8 +154,10 @@ intervalStart = time.time()
 #main loop
 while True:
 	rest = ""
-	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
-	
+	dir = os.getcwd().rsplit('/', 1)[1]
+	if dir == "": dir = "/"
+	command = raw_input(laptopName +  ":" + dir + " " + userName + "$ ")
+
 	if time.time() - intervalStart > 10:
 		intervalStart = time.time()
 		num_commands_in_intrl = 0
@@ -152,13 +168,13 @@ while True:
 
 	if " " in command: # find the first space
 		root = command[0:command.index(" ")]
-		rest = command[command.index(" "): len(command)]
+		rest = command[command.index(" ")+1: len(command)]
 	else:
 		root = command
 	if root == "ls":
 		troll_ls()
 	elif root == "cd":
-		print "cd"
+		troll_cd(rest)
 	elif root == "mkdir":
 		troll_mkdir()
 	elif root == "rm":
