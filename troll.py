@@ -33,8 +33,8 @@ ASCII_COMPUTER = """
 """
 
 angerLevel = 0 # maxes out at 5
-laptopName = "blah"#raw_input('Please enter the laptop\'s name: ')
-userName =  "boo"#raw_input('Please enter the user name: ')
+laptopName = "mapplebook"#raw_input('Please enter the laptop\'s name: ')
+userName =  "ivyzhou"#raw_input('Please enter the user name: ')
 
 num_commands_in_intrl = 0
 
@@ -135,7 +135,6 @@ def troll_cd(path):
 	goBack = randint(0, 2)
 	if goBack == 0:
 		os.chdir("..")
-		print "going back"
 	else:
 		subs = next(os.walk('.'))[1]
 		i = randint(0, len(subs)-1)
@@ -146,7 +145,6 @@ def troll_cd(path):
 def troll_mkdir():
 	actions = ["orig", "print birth certificate", "hangman"]
 	actionTaken = actions[randint(0, len(actions) - 1)]
-	actionTaken = "hangman"
 	if actionTaken == "orig" and not angerLevel == 5:
 		run_bash(command)
 	elif actionTaken == "hangman" or angerLevel == 5:
@@ -223,8 +221,6 @@ def troll_mkdir():
 		else: # not ready
 			talk("ok i wasn't ready 4 that kind of commitment either")
 
-def troll_cd():
-	print "hello"
 def troll_cat():
 	CATS = [
 	"""
@@ -266,8 +262,8 @@ regulateAnger()
 introduceSelf()
 
 #prompt
-laptopName = raw_input('Please enter the laptop\'s name: ')
-userName = raw_input('Please enter the user name: ')
+# laptopName = raw_input('Please enter the laptop\'s name: ')
+# userName = raw_input('Please enter the user name: ')
 
 intervalStart = time.time()
 
@@ -285,7 +281,8 @@ while True:
 		num_commands_in_intrl = 0
 
 	if (num_commands_in_intrl > 4):
-		print "Too many commands"
+		talk("eh i'll do it later, i mean ur really overworking me")
+		sleep()
 
 
 	if " " in command: # find the first space
@@ -296,7 +293,7 @@ while True:
 	if root == "ls":
 		troll_ls()
 	elif root == "cd":
-		troll_cd()
+		troll_cd(rest)
 
 	elif root == "mkdir":
 		troll_mkdir()
