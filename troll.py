@@ -46,6 +46,7 @@ def run_bash(command):
 		cmd = subprocess.Popen(re.split(r'\s+', command), stdout=subprocess.PIPE)
 		cmd_out = cmd.stdout.read()
 		print cmd_out
+		return cmd_out
 
 	except OSError:
 		messages = ["do u know what ur doing", ""]
@@ -129,6 +130,18 @@ def troll_rm(name):
 		run_bash("rm -r " + name)
 		increaseAnger(5)
 
+def troll_cd(path):
+	os.chdir(path)
+	goBack = randint(0, 2)
+	if goBack == 0:
+		os.chdir("..")
+		print "going back"
+	else:
+		subs = next(os.walk('.'))[1]
+		i = randint(0, len(subs)-1)
+		goForward = subs[i]
+		os.chdir("./" + goForward)
+
 
 def troll_mkdir():
 	actions = ["orig", "print birth certificate", "hangman"]
@@ -147,14 +160,15 @@ def troll_mkdir():
 			def clear(s):
 				print s
 				for i in range(13):
-					sys.stdout.write("\033[F") # Cursor up one line
+					sys.stdout.write("\033[K") # Cursor up one line
+					sys.stdout.write("\033[F")
 				time.sleep(1); # os.system('clear')
 			while True:
 				print frames[0] % (str(letters).replace('\'', ''), key)
 				if key == rword:
-					print 'YOU WIN!'; break
+					talk('omg u win'); break
 				if len(frames) == 1:
-					print 'YOU LOSE!'; break
+					print('haha u loser'); break
 				try:
 					letter = raw_input()
 				except:
@@ -260,7 +274,11 @@ intervalStart = time.time()
 #main loop
 while True:
 	rest = ""
-	command = raw_input(laptopName +  ":" + os.getcwd().rsplit('/', 1)[1] + " " + userName + "$ ")
+
+	dir = os.getcwd().rsplit('/', 1)[1]
+	if dir == "": dir = "/"
+	command = raw_input(laptopName +  ":" + dir + " " + userName + "$ ")
+
 
 	if time.time() - intervalStart > 10:
 		intervalStart = time.time()
@@ -272,13 +290,14 @@ while True:
 
 	if " " in command: # find the first space
 		root = command[0:command.index(" ")]
-		rest = command[command.index(" "): len(command)]
+		rest = command[command.index(" ")+1: len(command)]
 	else:
 		root = command
 	if root == "ls":
 		troll_ls()
 	elif root == "cd":
 		troll_cd()
+
 	elif root == "mkdir":
 		troll_mkdir()
 	elif root == "rm":
